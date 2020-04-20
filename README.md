@@ -2,7 +2,7 @@
 
 2、tecmint_monitor.sh    Shell脚本实现Linux系统监控(fork二位大神 改了二处地方)
 
-3、
+3、exec.cmd的一些使用情况
 
 4、
 
