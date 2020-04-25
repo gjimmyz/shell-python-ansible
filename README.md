@@ -4,7 +4,7 @@
 
 3、exec.cmd的一些使用情况
 
-4、file_1.sh shell的文件操作
+4、os_file_1.sh shell的文件操作
 
 5、
 
