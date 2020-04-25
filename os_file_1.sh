@@ -1,5 +1,5 @@
 直接上代码
-[root@localhost scripts]# cat file_1.sh
+[root@localhost scripts]# cat os_file_1.sh
 #!/bin/bash
 #--------------------------------------------------
 #Author:gongzheng
@@ -40,7 +40,7 @@ else
 fi
 
 效果:
-[root@localhost scripts]# sh file_1.sh
+[root@localhost scripts]# sh os_file_1.sh
 送杜少府之任蜀州
 城阙辅三秦，风烟望五津。
 与君离别意，同是宦游人。
@@ -49,4 +49,4 @@ fi
 
 PS:
 有相应的python代码 主要是为了和python比较下
-具体地址:https://github.com/gjimmyz/python/blob/master/file_1.py
+具体地址:https://github.com/gjimmyz/python/blob/master/os_file_1.py
