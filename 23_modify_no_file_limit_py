@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+#--------------------------------------------------
+#Author:gong_zheng
+#Email:gong_zheng@mingmatechs.com
+#FileName:modify_no_file_limit_py
+#Function:
+#Version:1.0
+#Created:2022-12-01
+#--------------------------------------------------
+import subprocess
+import sys
+import os
+
+fmt = '\033[0;3{}m{}\033[0m'.format
+class color:
+    RED    = 1#红
+    GREEN  = 2#绿
+    YELLOW = 3#黄
+
+def get_kvm_pids():
+    get_kvm_pids_cmdline = "ps aux|grep /usr/bin/kvm|grep -v grep|awk '{print $2}'"
+    #print(fmt(color.YELLOW,("Get Kvm Pids Cmdline Is: %s" % get_kvm_pids_cmdline)))
+    stdout_data = subprocess.getoutput(get_kvm_pids_cmdline)
+    return(stdout_data)
+
+def check_pids_limits():
+    pids = get_kvm_pids()
+    pids_list = pids.split()
+    for pids_limit in pids_list:
+        check_pids_limits_cmdline = ("cat" + " /proc/" + format(pids_limit) + "/limits" + "|" + "grep " + "'Max open files'" + "|" + "awk " + "'{print $5}'")
+        #print(fmt(color.YELLOW,("Check Kvm Pids Limit Cmdline Is: %s" % check_pids_limits_cmdline)))
+        stdout_data = subprocess.getoutput(check_pids_limits_cmdline)
+        if stdout_data != "1048576":
+            return(pids_limit)
+
+if __name__=="__main__":
+    get_kvm_pids()
+    pids = check_pids_limits()
+    if pids:
+        pids_list = pids.split()
+        for set_pid_limit in pids_list:
+            print(fmt(color.GREEN,("Set Kvm Pid Is %s" % set_pid_limit)))
+            cmdline = ("prlimit " + "--nofile=" + "1048576" + ":" + "1048576" + " --pid " + set_pid_limit)
+            stdout_data = subprocess.run(cmdline,shell=True,stdout=subprocess.PIPE)
+            print(fmt(color.GREEN,("Set Cmdline Is:%s " % stdout_data)))
+    else:
+        pass
+        #print(fmt(color.YELLOW,("Nothing to do")))
