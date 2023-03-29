@@ -12,7 +12,7 @@
 
 7、while用法
 
-8、
+8、8_for_jumpserver_get_ip_assets.py从jumpserver堡垒机获取全部IP
 
 9、
 
