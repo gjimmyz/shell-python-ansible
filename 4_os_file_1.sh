@@ -1,5 +1,3 @@
-直接上代码
-[root@localhost scripts]# cat os_file_1.sh
 #!/bin/bash
 #--------------------------------------------------
 #Author:gongzheng
@@ -46,7 +44,3 @@ fi
 与君离别意，同是宦游人。
 海内存知己，天涯若比邻。
 无为在歧路，儿女共沾巾。
-
-PS:
-有相应的python代码 主要是为了和python比较下
-具体地址:https://github.com/gjimmyz/python/blob/master/1_os_file_1.py
