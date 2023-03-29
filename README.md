@@ -10,7 +10,7 @@
 
 6、6_ansible_space_disk_check.sh 空间统计
 
-7、while用法
+7、7_while while用法
 
 8、8_for_jumpserver_get_ip_assets.py从jumpserver堡垒机获取全部IP
 
