@@ -4,11 +4,11 @@
 
 3、
 
-4、os_file_1.sh shell的文件操作
+4、4_os_file_1.sh shell的文件操作
 
-5、du_sh.sh 统计空间 大概统计200T空间 大概目录40个
+5、5_du_sh.sh 统计空间 大概统计200T空间 大概目录40个
 
-6、df 空间统计
+6、6_ansible_space_disk_check.sh 空间统计
 
 7、while用法
 
