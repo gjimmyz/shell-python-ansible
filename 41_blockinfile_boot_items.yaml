@@ -1,4 +1,3 @@
-cat boot_items.yml 
 - name: "设置开机启动项"
   hosts: "neiwang_test"
   gather_facts: false
