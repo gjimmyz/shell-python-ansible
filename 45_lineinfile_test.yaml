@@ -1,0 +1,36 @@
+- name: "添加用户到sudo"
+  hosts: "neiwang_test"
+  gather_facts: false
+
+  tasks:
+       - name: "添加gjimmyz用户到sudo文件里 并设置nopasswd"
+         lineinfile:
+            dest: /etc/sudoers
+            regexp: '^gjimmyz'
+            line: 'gjimmyz ALL=(ALL) NOPASSWD: ALL'
+
+配置文件:
+[root@localhost ansible]# cat hosts 
+[neiwang]
+192.168.0.109 ansible_ssh_host=192.168.0.109 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+192.168.0.111 ansible_ssh_host=192.168.0.111 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+192.168.0.112 ansible_ssh_host=192.168.0.112 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+[neiwang_test]
+192.168.0.109 ansible_ssh_host=192.168.0.109 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+
+效果:
+[root@localhost ansible]# ansible-playbook lineinfile_sudo.yml
+
+PLAY [添加用户到sudo] ***********************************************************************************************************************************
+
+TASK [添加gjimmyz用户到sudo文件里 并设置nopasswd] *************************************************************************************************************
+changed: [192.168.0.109]
+
+PLAY RECAP *****************************************************************************************************************************************
+192.168.0.109              : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+root@192.168.0.109:~# cat /etc/sudoers|grep gjimmyz
+gjimmyz ALL=(ALL) NOPASSWD: ALL
+
+参考:
+https://docs.ansible.com/ansible/latest/modules/lineinfile_module.html#lineinfile-module
