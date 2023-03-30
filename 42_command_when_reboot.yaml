@@ -1,0 +1,52 @@
+- name: "重启机器"
+  hosts: "neiwang_test"
+  gather_facts: true
+
+  tasks:
+       - name: "debug"
+         debug:
+           msg: "{{inventory_hostname}}"
+           #这个会打印系统超详细信息 一般不用开
+           #var: ansible_facts
+
+       - name: "重启机器"
+         command: /sbin/shutdown -r +1
+         #这里用到的facts所以上面gather_facts必须要开启 否则无效
+         when: 
+           - ansible_facts['distribution'] == "CentOS"
+           - ansible_facts['distribution_major_version'] == "7"
+         async: 0
+         poll: 0
+         changed_when : false
+         ignore_errors: true
+       
+配置文件:
+[neiwang]
+192.168.0.109 ansible_ssh_host=192.168.0.109 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+192.168.0.111 ansible_ssh_host=192.168.0.111 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+192.168.0.112 ansible_ssh_host=192.168.0.112 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+[neiwang_test]
+192.168.0.109 ansible_ssh_host=192.168.0.109 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+
+执行:
+[root@localhost ansible]# ansible-playbook command_reboot_yml 
+
+PLAY [重启机器] ****************************************************************************************************************************************
+
+TASK [Gathering Facts] *****************************************************************************************************************************
+ok: [192.168.0.109]
+
+TASK [debug] ***************************************************************************************************************************************
+ok: [192.168.0.109] => {
+    "msg": "192.168.0.109"
+}
+
+TASK [重启机器] ****************************************************************************************************************************************
+ok: [192.168.0.109]
+
+PLAY RECAP *****************************************************************************************************************************************
+192.168.0.109              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+参考:
+https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html
+https://docs.ansible.com/ansible/latest/modules/command_module.html#command-module
