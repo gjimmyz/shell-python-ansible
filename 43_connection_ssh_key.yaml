@@ -1,0 +1,80 @@
+- name: "给远程机器添加ssh_key"
+  hosts: "neiwang"
+  gather_facts: false
+  connection: local
+
+  tasks:
+       - name: "debug"
+         debug:
+           msg: "{{inventory_hostname}}"
+
+       - name: "ssh_key"
+         shell: |
+          ssh-keyscan {{inventory_hostname}} >> ~/.ssh/known_hosts
+          sshpass -p'2' ssh-copy-id root@{{inventory_hostname}}
+       - name: "查看ansible版本"
+         command: ansible --version
+         register: ansibleversion
+
+       - name: "打印版本信息"
+         debug:
+           msg: "{{ ansibleversion.stdout }}"
+
+配置文件:
+[neiwang]
+192.168.0.109 ansible_ssh_host=192.168.0.109 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+192.168.0.111 ansible_ssh_host=192.168.0.111 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+192.168.0.112 ansible_ssh_host=192.168.0.112 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+
+效果:
+[root@localhost ansible]# ansible-playbook ssh_key.yml 
+
+PLAY [给远程机器添加ssh_key] ******************************************************************************************************************************
+
+TASK [debug] ***************************************************************************************************************************************
+ok: [192.168.0.109] => {
+    "msg": "192.168.0.109"
+}
+ok: [192.168.0.111] => {
+    "msg": "192.168.0.111"
+}
+ok: [192.168.0.112] => {
+    "msg": "192.168.0.112"
+}
+
+TASK [ssh_key] *************************************************************************************************************************************
+changed: [192.168.0.112]
+changed: [192.168.0.109]
+changed: [192.168.0.111]
+
+TASK [查看ansible版本] *********************************************************************************************************************************
+changed: [192.168.0.109]
+changed: [192.168.0.112]
+changed: [192.168.0.111]
+
+TASK [打印版本信息] **************************************************************************************************************************************
+ok: [192.168.0.109] => {
+    "msg": "ansible 2.9.6\n  config file = /etc/ansible/ansible.cfg\n  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']\n  ansible python module location = /usr/lib/python2.7/site-packages/ansible\n  executable location = /usr/bin/ansible\n  python version = 2.7.5 (default, Oct 30 2018, 23:45:53) [GCC 4.8.5 20150623 (Red Hat 4.8.5-36)]"
+}
+ok: [192.168.0.111] => {
+    "msg": "ansible 2.9.6\n  config file = /etc/ansible/ansible.cfg\n  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']\n  ansible python module location = /usr/lib/python2.7/site-packages/ansible\n  executable location = /usr/bin/ansible\n  python version = 2.7.5 (default, Oct 30 2018, 23:45:53) [GCC 4.8.5 20150623 (Red Hat 4.8.5-36)]"
+}
+ok: [192.168.0.112] => {
+    "msg": "ansible 2.9.6\n  config file = /etc/ansible/ansible.cfg\n  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']\n  ansible python module location = /usr/lib/python2.7/site-packages/ansible\n  executable location = /usr/bin/ansible\n  python version = 2.7.5 (default, Oct 30 2018, 23:45:53) [GCC 4.8.5 20150623 (Red Hat 4.8.5-36)]"
+}
+
+PLAY RECAP *****************************************************************************************************************************************
+192.168.0.109              : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+192.168.0.111              : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+192.168.0.112              : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
+
+PS:主机就是控制端需要先执行下(一次性)ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ''
+[root@localhost .ssh]# pwd
+/root/.ssh
+[root@localhost .ssh]# ll
+total 12
+-rw------- 1 root root 1675 Mar 31 21:48 id_rsa
+-rw-r--r-- 1 root root  408 Mar 31 21:48 id_rsa.pub
+-rw-r--r-- 1 root root 1995 Mar 31 22:25 known_hosts
+配置文件 认证地方需要修改
+host_key_checking = False
