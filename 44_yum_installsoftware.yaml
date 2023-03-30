@@ -1,0 +1,50 @@
+- name: "使用yum安装jdk包"
+  hosts: "neiwang_test"
+  gather_facts: false
+
+  tasks:
+       - name: "debug"
+         debug:
+           msg: "{{inventory_hostname}}"
+
+       #从本地内网安装rpm包
+       - name: "安装jdk-8u241-linux-x64.rpm"
+         yum: 
+            name: http://192.168.0.107/jdk-8u241-linux-x64.rpm
+            state: installed
+
+配置文件:
+[root@localhost ansible]# cat hosts 
+[neiwang]
+192.168.0.109 ansible_ssh_host=192.168.0.109 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+192.168.0.111 ansible_ssh_host=192.168.0.111 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+192.168.0.112 ansible_ssh_host=192.168.0.112 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+[neiwang_test]
+192.168.0.109 ansible_ssh_host=192.168.0.109 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+
+执行:
+[root@localhost ansible]# ansible-playbook yum_installsoftware.yml
+
+PLAY [使用yum安装jdk包] *********************************************************************************************************************************
+
+TASK [debug] ***************************************************************************************************************************************
+ok: [192.168.0.109] => {
+    "msg": "192.168.0.109"
+}
+
+TASK [安装jdk-8u191-linux-x64.rpm] *******************************************************************************************************************
+changed: [192.168.0.109]
+
+PLAY RECAP *****************************************************************************************************************************************
+192.168.0.109              : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
+
+效果:
+root@192.168.0.109:~# java -version
+java version "1.8.0_241"
+Java(TM) SE Runtime Environment (build 1.8.0_241-b07)
+Java HotSpot(TM) 64-Bit Server VM (build 25.241-b07, mixed mode)
+root@192.168.0.109:~# javac -version
+javac 1.8.0_241
+
+参考:
+https://docs.ansible.com/ansible/latest/modules/yum_module.html#yum-module
