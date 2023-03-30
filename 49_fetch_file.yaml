@@ -1,0 +1,72 @@
+1、
+- hosts: neiwang
+  gather_facts: false
+  user: root
+  vars:
+       curr_date: "{{ lookup('pipe','date +%Y%m%d') }}"
+
+  tasks:
+       - name: find files
+         find:
+          paths: /root/scripts/{{curr_date}}
+          patterns: "*"
+          recurse: no
+         register: file_fetch
+
+       - name: fetch files
+         fetch:
+          src: "{{ item.path }}"
+          dest: /root/scripts/log/
+          flat: yes
+         with_items: "{{ file_fetch.files }}"
+
+参考:
+https://docs.ansible.com/ansible/latest/modules/fetch_module.html#fetch-module
+插件:
+https://docs.ansible.com/ansible/latest/plugins/lookup/pipe.html
+
+2、
+- hosts: all
+  gather_facts: false
+  user: root
+  vars:
+       curr_date: "{{ lookup('pipe','date +%Y%m%d') }}"
+
+  tasks:
+       - name: find files
+         find:
+          paths: /root/scripts/save_backup/{{curr_date}}
+          patterns: "*"
+          recurse: no
+         register: file_fetch
+
+       - name: fetch files
+         fetch:
+          src: "{{ item.path }}"
+          dest: /etc/ansible/fetch_all_log/{{curr_date}}/{{inventory_hostname}}/
+          flat: yes
+         with_items: "{{ file_fetch.files }}"
+效果:
+[root@NC-NFS03 20210427]# ll
+total 56
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 10.81.112.11_D15_U40_U41_Lenovo_Slurm01
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 10.81.112.12_D15_U38_U39_Lenovo_Slurm02
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 10.81.112.13_D15_U36_U37_Lenovo_Slurm03
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 10.81.112.14_D15_U34_U35_Lenovo_Slurm04
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 10.81.112.15_D15_U32_U33_Lenovo_Slurm05
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 10.81.112.16_D15_U30_U31_Lenovo_Slurm06
+drwxr-xr-x 2 root root  150 Apr 27 13:22 10.81.112.17_D15_U28_U29_Lenovo_Slurm07
+drwxr-xr-x 2 root root  132 Apr 27 13:22 10.81.112.18_D15_U26_U27_Lenovo_Slurm08
+drwxr-xr-x 2 root root  132 Apr 27 13:22 10.81.112.19_D15_U24_U25_Lenovo_Slurm09
+drwxr-xr-x 2 root root   92 Apr 27 13:22 10.81.112.20_D15_U22_U23_Lenovo_Slurm10
+drwxr-xr-x 2 root root   29 Apr 27 13:22 10.81.112.21_D15_U20_U21_Lenovo_Slurm11
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 172.31.100.12_A03_U23_Lenovo
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 172.31.100.150_A10_U31_Lenovo_app_nfs
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 172.31.100.23_A10_U30_Lenovo
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 172.31.100.249_A07_U19_Lenovo
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 172.31.100.33_A12_U41_U42_Lenovo_iceberg2_nfs
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 172.31.100.37_D16_U18_U19_Lenovo_titan1
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 172.31.100.38_D16_U16_U17_Lenovo_titan2
+drwxr-xr-x 2 root root 4096 Apr 27 13:22 172.31.100.39_D15_U14_U15_Lenovo
+[root@NC-NFS03 20210427]# pwd
+/etc/ansible/fetch_all_log/20210427
