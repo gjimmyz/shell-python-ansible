@@ -1,0 +1,47 @@
+- hosts: dell_disk
+  become: yes
+  gather_facts: no
+
+  tasks:
+    - name: upload MegaCli64
+      copy:
+        src: files/MegaCli-8.07.14-1.noarch.rpm
+        dest: /tmp/MegaCli-8.07.14-1.noarch.rpm
+
+    - name: install MegaCli64 rpm from a local file
+      yum:
+        name: /tmp/MegaCli-8.07.14-1.noarch.rpm
+        #state: present
+        state: installed
+
+    - name: create symlink for MegaCli64
+      file:
+        src: /opt/MegaRAID/MegaCli/MegaCli64
+        dest: /usr/sbin/MegaCli
+        state: link
+
+    - name: Check Disk Status
+      command: ./MegaCli64 -ShowSummary -aALL
+      args:
+        chdir: /opt/MegaRAID/MegaCli/
+      register: result
+
+    - name: Log check info(cd /opt/MegaRAID/MegaCli/ && ./MegaCli64 -ShowSummary -aALL)
+      lineinfile:
+        dest: "{{inventory_dir}}/dell_disk_check.log"
+        line: '{{inventory_hostname}}'
+        insertafter: EOF
+        create: yes
+      when: '"Failed" in result.stdout'
+      delegate_to: localhost
+      become: no
+
+    - name: Log check info(cd /opt/MegaRAID/MegaCli/ && ./MegaCli64 -ShowSummary -aALL)
+      lineinfile:
+        dest: "{{inventory_dir}}/dell_disk_check.log"
+        line: '{{inventory_hostname}}'
+        insertafter: EOF
+        create: yes
+      when: '"Failure" in result.stdout'
+      delegate_to: localhost
+      become: no
