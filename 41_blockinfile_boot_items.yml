@@ -1,0 +1,69 @@
+cat boot_items.yml 
+- name: "设置开机启动项"
+  hosts: "neiwang_test"
+  gather_facts: false
+
+  tasks:
+       - name: "debug"
+         debug:
+           msg: "{{inventory_hostname}}"
+
+       - name: "增加执行权限"
+         file:
+          path: /etc/rc.d/rc.local
+          mode: '0755'
+
+       - name: "设置开机启动"
+         blockinfile:
+          path: /etc/rc.d/rc.local
+          block: |
+            sleep 5
+   
+配置文件:
+[neiwang]
+192.168.0.109 ansible_ssh_host=192.168.0.109 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+192.168.0.111 ansible_ssh_host=192.168.0.111 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+192.168.0.112 ansible_ssh_host=192.168.0.112 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+[neiwang_test]
+192.168.0.109 ansible_ssh_host=192.168.0.109 ansible_ssh_user=root ansible_ssh_pass=2 ansible_ssh_port=22
+
+执行:
+[root@localhost ansible]# ansible-playbook boot_items.yml 
+
+PLAY [设置开机启动项] *************************************************************************************************************************************
+
+TASK [debug] ***************************************************************************************************************************************
+ok: [192.168.0.109] => {
+    "msg": "192.168.0.109"
+}
+
+TASK [增加执行权限] **************************************************************************************************************************************
+changed: [192.168.0.109]
+
+TASK [设置开机启动] **************************************************************************************************************************************
+changed: [192.168.0.109]
+
+PLAY RECAP *****************************************************************************************************************************************
+192.168.0.109              : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
+
+效果:
+[root@localhost ~]# cat /etc/rc.d/rc.local 
+#!/bin/bash
+# THIS FILE IS ADDED FOR COMPATIBILITY PURPOSES
+#
+# It is highly advisable to create own systemd services or udev rules
+# to run scripts during boot instead of using this file.
+#
+# In contrast to previous versions due to parallel execution during boot
+# this script will NOT be run after all other services.
+#
+# Please note that you must run 'chmod +x /etc/rc.d/rc.local' to ensure
+# that this script will be executed during boot.
+
+touch /var/lock/subsys/local
+# BEGIN ANSIBLE MANAGED BLOCK
+sleep 5
+# END ANSIBLE MANAGED BLOCK
+
+参考:
+https://docs.ansible.com/ansible/latest/modules/blockinfile_module.html#blockinfile-module
