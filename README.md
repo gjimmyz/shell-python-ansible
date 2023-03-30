@@ -57,3 +57,43 @@
 29、
 
 30、
+
+31、
+
+32、
+
+33、
+
+34、
+
+35、
+
+36、
+
+37、
+
+38、
+
+39、
+
+40、
+
+41、41_blockinfile_boot_items.yaml blockinfile模块 设置开机启动
+
+42、42_command_when_reboot.yaml command when 重启机器
+
+43、43_connection_ssh_key.yaml connection 给远程机器添加ssh_key
+
+44、44_yum_installsoftware.yaml yum 使用yum安装jdk包
+
+45、45_lineinfile_test.yaml lineinfile 添加用户到sudo文件
+
+46、46_hp_disk_check.yaml hp硬盘raid检查
+ 
+47、47_dell_disk_check.yaml dell硬盘raid检查
+
+48、48_save.sh save信息
+
+49、49_fetch_file.yaml 从各个节点上拉取批量日志到中心机
+
+50、
