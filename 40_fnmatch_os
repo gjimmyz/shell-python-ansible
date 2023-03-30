@@ -1,0 +1,52 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#--------------------------------------------------
+#Author:gongzheng
+#Email:gong_zheng@mingmatechs.com
+#FileName:list_path.py
+#Function:
+#Version:1.0
+#Created:2021-05-03
+#--------------------------------------------------
+import os
+import fnmatch
+
+'''
+目录结构
+tree test_a/
+test_a/
+├── a
+│   └── finish_txt
+├── b
+│   └── finish_txt
+└── c
+3 directories, 2 files
+'''
+
+source_dir = "/root/test_a"
+marker_file = "finish_txt"
+root_dir = "/opt/test/"
+oswalkfile = root_dir + "os_walk_file"
+
+#如果目录不存在 就创建目录
+path_exists = os.path.exists(root_dir)
+if not path_exists:
+    os.makedirs(root_dir)
+
+#文件存在 就清空下
+if os.path.exists(oswalkfile):
+    with open(oswalkfile,'r+') as f:
+        f.truncate(0)
+
+#遍历某个目录 找出匹配到的file名字 然后拼接路径 并写入文件
+for root,dirs,files in os.walk(source_dir):
+    for f_name in files:
+        if fnmatch.fnmatch(f_name,marker_file):
+            source_dir_join = os.path.join(root)
+            with open(oswalkfile,'a+') as f:
+                f.write(source_dir_join + "\n")
+        else:
+            pass
+#参考
+https://docs.python.org/2/library/os.html
+https://python.readthedocs.io/en/v2.7.2/library/fnmatch.html
