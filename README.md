@@ -34,49 +34,49 @@
 
 18、18_os_file_time.py 日志文件分析
 
-19、
+19、19_add_local_gong_zheng_for_ubuntu2004_lxc.sh
 
-20、
+20、20_init_for_ubuntu2004_lxc.sh 初始化
 
-21、
+21、21_create_qemu_temp.py 创建虚拟机
 
-22、
+22、22_ulimit_open_files.sh 修改open file
 
-23、
+23、23_modify_no_file_limit_py 修改open file
 
-24、
+24、24_for_jumpserver_add_assets.py 堡垒机添加机器
 
-25、
+25、25_proxmox_for_virtio_linux.sh 
 
-26、
+26、26_telnet_check.sh telnet检查
 
-27、
+27、27_mysql_conn.py mysql连接
 
-28、
+28、28_mysql_conn_config.py 使用配置文件连接mysql
 
-29、
+29、29_paramiko_ssh.py ssh连接
 
-30、
+30、30_px_ssh.py
 
-31、
+31、31_ftp_client.py ftp客户端
 
-32、
+32、32_telnet_check.py telnet检查
 
-33、
+33、33_psutil_swap.py 检查swap
 
-34、
+34、34_ping_check.py ping检查
 
-35、
+35、35_scan_ip.py 扫描
 
-36、
+36、36_rsync_trans.py rsync
 
-37、
+37、37_cmdline.py
 
-38、
+38、38_diff_file.py 比对文件
 
-39、
+39、39_tar_subprocess_os.py 
 
-40、
+40、40_fnmatch_os
 
 41、41_blockinfile_boot_items.yaml blockinfile模块 设置开机启动
 
