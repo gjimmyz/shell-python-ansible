@@ -96,4 +96,8 @@
 
 49、49_fetch_file.yaml 从各个节点上拉取批量日志到中心机
 
-50、
+50、50_case_start_java.sh
+
+51、51_java_demo4_web
+
+52、52_gitlab_11_1_4_compose_yaml
