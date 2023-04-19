@@ -57,7 +57,7 @@ def main():
         current_year = now.strftime('%Y')
         current_month = now.strftime('%m')
         current_day = now.strftime('%Y%m%d')
-        current_timestamp = now.isoformat()
+        current_timestamp = now.isoformat()[:-7]
 
         for ip in ip_list:
             base_log_path = f"/root/scripts/python3_8_9_project/promethues_api_log/{current_year}/{current_month}/{current_day}/{ip}/cpu"
