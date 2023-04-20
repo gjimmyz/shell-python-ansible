@@ -107,3 +107,7 @@
 54、54_proemethus_api_level_2.py
 
 55、55_proemethus_api_level_3.py
+
+56、56_long_ping.py
+
+57、57_analysis_log.py
