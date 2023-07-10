@@ -57,8 +57,8 @@
 57_analysis_log.py  
 58_deal_report_and_monitor_process.py  
 59_jenkins_pipeline_1.py  
-60_muilt.sh  多进程计算md5
-61_generate_image.py ai产生图片
-62_analysis_log.py 长ping并分析
-62_long_ping.py 长ping并分析
+60_muilt.sh  多进程计算md5。
+61_generate_image.py ai产生图片  
+62_analysis_log.py 长ping并分析  
+62_long_ping.py 长ping并分析  
 63_check.py 每隔时间段分析网络，硬盘写入，cpu等，适合单机临时监控
